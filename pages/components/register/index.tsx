@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,10 @@ import {
   Modal,
   TouchableHighlight,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import InputItem from '../common/input-item/index';
 
-import store from '../../store/index';
 import {register} from '../../store/action';
 
 import styles from './style';
@@ -23,6 +23,8 @@ const App: React.FC = () => {
   const [modalLogin, setModalLogin] = useState(false);
   const [result, setResult] = useState(false);
   const [verify, setverify] = useState('121456');
+  // dispath
+  const dispatch = useDispatch(); //从Hook里面获取dispatch,useDispatch来自于react-redux
 
   //自定义方法
   function onChangeAccount(value: string) {
@@ -41,7 +43,7 @@ const App: React.FC = () => {
   }
 
   function getVerify() {
-    const getRandom = () => (Math.random() * 10) >> 0;
+    const getRandom = () => Math.round(Math.random() * 10);
     let num = '';
     for (let i = 0; i < 6; i++) {
       num += getRandom();
@@ -55,16 +57,9 @@ const App: React.FC = () => {
     setResult(res);
     setModalLogin(true);
     if (res) {
-      store.dispatch(register({account, password}));
+      dispatch(register({account, password}));
     }
   }
-
-  // hooks
-  useEffect(() => {
-    store.subscribe(() => {
-      console.log(store.getState().users);
-    });
-  }, []);
 
   return (
     <>

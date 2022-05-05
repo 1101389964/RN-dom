@@ -1,10 +1,10 @@
 export type userType = {
-  account: string;
-  password: string;
+  account?: string;
+  password?: string;
 };
 
 export type dataType = {
-  users: userType[];
+  users: userType;
 };
 
 export type actionType = {

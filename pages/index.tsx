@@ -1,49 +1,42 @@
-import React, {memo, useState} from 'react';
-import {View, SafeAreaView, Text, ImageBackground} from 'react-native';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-// import {Provider} from 'react-redux';
-// import store from './store/index';
+import {Provider} from 'react-redux';
+import store from './store/index';
 
-import Register from './components/register';
-import Login from './components/login';
-import styles from './style';
+import App from './app';
+import Home from './components/database';
 
-const App: React.FC = () => {
-  //定义的状态及变量
-  const [flag, setFlag] = useState(true);
-  //hooks
+const Stack = createNativeStackNavigator();
 
-  //登陆
-  function login() {
-    setFlag(false);
-  }
-
-  //注册
-  function register() {
-    setFlag(true);
-  }
-
+export default function () {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.top}>
-        <View style={styles.img}>
-          <ImageBackground
-            source={require('./img/src=http___img1.niutuku.com_hd_1308_59_59-niutuku.com-242526.jpg&refer=http___img1.niutuku.webp')}
-            style={styles.img}>
-            <View style={styles.btnFather}>
-              <Text style={styles.LoginOrRegister} onPress={login}>
-                登录
-              </Text>
-              <Text style={styles.LoginOrRegister} onPress={register}>
-                注册
-              </Text>
-            </View>
-          </ImageBackground>
-        </View>
-      </View>
-      {flag ? <Register /> : <Login />}
-    </SafeAreaView>
+    <Provider store={store}>
+      <NavigationContainer>
+        {/* initialRouteName 为默认的路由name, screenOptions为配置去全局标题栏样式 */}
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={App}
+            options={{
+              title: 'Login',
+              headerStyle: {
+                backgroundColor: '#5294db',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{title: '数据库'}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
-};
-
-export default memo(App);
+}

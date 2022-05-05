@@ -8,10 +8,20 @@ import {
 } from 'react-native';
 
 import InputItem from '../common/input-item';
-
+import {useSelector, shallowEqual} from 'react-redux';
 import styles from './style';
+import {dataType, userType} from '../../store/interfsce';
 
-const App: React.FC = () => {
+const App: React.FC = props => {
+  const {navigation} = props;
+
+  //redux
+  const users = useSelector<dataType, userType>(
+    //下面函数的返回值会作为useSelector的返回值
+    state => state.users,
+    shallowEqual, //传入shallowEqual useSelector
+  );
+
   //定义的状态及变量
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
@@ -30,8 +40,14 @@ const App: React.FC = () => {
   }
 
   function testVerify() {
-    setResult(false);
-    setModalLogin(true);
+    const {account: act, password: pwd} = users;
+    if (account === act && password === pwd) {
+      setResult(true);
+      navigation.navigate('Home');
+    } else {
+      setResult(false);
+      setModalLogin(true);
+    }
   }
   return (
     <>

@@ -3,7 +3,7 @@ import {RegisterAccount} from './constant';
 import {dataType, actionType} from './interfsce';
 
 const data: dataType = {
-  users: [],
+  users: {},
 };
 
 const reducer = (state = data, action: actionType) => {
