@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,9 @@ import {
 } from 'react-native';
 
 import InputItem from '../common/input-item/index';
+
+import store from '../../store/index';
+import {register} from '../../store/action';
 
 import styles from './style';
 
@@ -21,7 +24,7 @@ const App: React.FC = () => {
   const [result, setResult] = useState(false);
   const [verify, setverify] = useState('121456');
 
-  //hooks
+  //自定义方法
   function onChangeAccount(value: string) {
     setAccount(value);
     console.log(value);
@@ -51,7 +54,18 @@ const App: React.FC = () => {
     const res = verify === vrify ? true : false;
     setResult(res);
     setModalLogin(true);
+    if (res) {
+      store.dispatch(register({account, password}));
+    }
   }
+
+  // hooks
+  useEffect(() => {
+    store.subscribe(() => {
+      console.log(store.getState().users);
+    });
+  }, []);
+
   return (
     <>
       <View style={styles.bottom}>

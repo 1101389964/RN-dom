@@ -1,7 +1,8 @@
-import React, {memo, useState, useEffect} from 'react';
+import React, {memo, useState} from 'react';
 import {View, SafeAreaView, Text, ImageBackground} from 'react-native';
 
-import request from '../request';
+// import {Provider} from 'react-redux';
+// import store from './store/index';
 
 import Register from './components/register';
 import Login from './components/login';
@@ -9,15 +10,8 @@ import styles from './style';
 
 const App: React.FC = () => {
   //定义的状态及变量
-  const [banners, setBanners] = useState([]);
   const [flag, setFlag] = useState(true);
   //hooks
-  useEffect(() => {
-    request.get('/banner?type=2').then((res: any) => {
-      setBanners(res.banners);
-    });
-    console.log(banners);
-  }, [banners]);
 
   //登陆
   function login() {

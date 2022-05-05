@@ -4,8 +4,19 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
+import android.os.Bundle;
+
 public class MainActivity extends ReactActivity {
 
+  /**
+   * 配置react-navigation6.x版本
+   * react-native-screens包在android上的配置
+  */
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
+  }
+  x
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
