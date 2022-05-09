@@ -10,13 +10,13 @@ import {
 import InputItem from '../common/input-item';
 import {useSelector, shallowEqual} from 'react-redux';
 import styles from './style';
-import {dataType, userType} from '../../store/interfsce';
+import {datasType, userType} from '../../store/interfsce';
 
-const App: React.FC = props => {
+const App = (props: {navigation?: any}) => {
   const {navigation} = props;
 
   //redux
-  const users = useSelector<dataType, userType>(
+  const users = useSelector<datasType, userType>(
     //下面函数的返回值会作为useSelector的返回值
     state => state.users,
     shallowEqual, //传入shallowEqual useSelector
@@ -27,17 +27,6 @@ const App: React.FC = props => {
   const [password, setPassword] = useState('');
   const [modalLogin, setModalLogin] = useState(false);
   const [result, setResult] = useState(false);
-
-  //hooks
-  function onChangeAccount(value: string) {
-    setAccount(value);
-    console.log(value);
-  }
-
-  function onChangePassword(value: string) {
-    setPassword(value);
-    console.log(value);
-  }
 
   function testVerify() {
     const {account: act, password: pwd} = users;
@@ -55,14 +44,15 @@ const App: React.FC = props => {
         <InputItem
           value={account}
           loginUrl={require('../../img/icon/account.png')}
-          changeText={onChangeAccount}
+          changeText={setAccount}
           defaultValue="请输入账号"
         />
         <InputItem
           value={password}
           loginUrl={require('../../img/icon/password.png')}
-          changeText={onChangePassword}
+          changeText={setPassword}
           defaultValue="请输入密码"
+          secure={true}
         />
 
         <TouchableOpacity

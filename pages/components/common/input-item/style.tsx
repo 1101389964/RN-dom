@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingLeft: 20,
     marginVertical: 10,
     height: 40,
     width: 300,
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(249,249,249)',
   },
   searchLogin: {
-    marginHorizontal: 20,
+    marginRight: 15,
     flexBasis: 25,
     height: 25,
   },

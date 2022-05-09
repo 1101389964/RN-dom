@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 20,
-    color: '#111',
+    color: '#fff',
   },
   //modal
   centeredView: {

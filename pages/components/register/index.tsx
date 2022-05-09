@@ -26,22 +26,6 @@ const App: React.FC = () => {
   // dispath
   const dispatch = useDispatch(); //从Hook里面获取dispatch,useDispatch来自于react-redux
 
-  //自定义方法
-  function onChangeAccount(value: string) {
-    setAccount(value);
-    console.log(value);
-  }
-
-  function onChangeVerify(value: string) {
-    setVrify(value);
-    console.log(value);
-  }
-
-  function onChangePassword(value: string) {
-    setPassword(value);
-    console.log(value);
-  }
-
   function getVerify() {
     const getRandom = () => Math.round(Math.random() * 10);
     let num = '';
@@ -67,13 +51,13 @@ const App: React.FC = () => {
         <InputItem
           value={account}
           defaultValue="请输入账号"
-          changeText={text => onChangeAccount(text)}
+          changeText={setAccount}
           loginUrl={require('../../img/icon/account.png')}
         />
         <InputItem
           value={vrify}
           defaultValue="请输入验证码"
-          changeText={text => onChangeVerify(text)}
+          changeText={setVrify}
           loginUrl={require('../../img/icon/verify.png')}
           contorlMessage={{
             title: '获取验证码',
@@ -83,7 +67,8 @@ const App: React.FC = () => {
         <InputItem
           value={password}
           defaultValue="请输入密码"
-          changeText={text => onChangePassword(text)}
+          secure={true}
+          changeText={setPassword}
           loginUrl={require('../../img/icon/password.png')}
         />
 

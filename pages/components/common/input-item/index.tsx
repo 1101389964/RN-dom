@@ -12,7 +12,7 @@ import styles from './style';
 
 interface propsType {
   value: string;
-  loginUrl: ImageSourcePropType;
+  loginUrl?: ImageSourcePropType | boolean;
   changeText: (text: string) => void;
   textAlign?: 'left' | 'center' | 'right';
   defaultValue?: string;
@@ -21,6 +21,7 @@ interface propsType {
     color?: string;
     onPress?: (text?: any) => void;
   };
+  secure?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -28,9 +29,10 @@ function Index(props: propsType) {
   const {
     changeText,
     value,
+    loginUrl = false,
     defaultValue = '',
     textAlign = 'left',
-    loginUrl,
+    secure = false,
     contorlMessage = {title: '', color: '#749bd3', onPress: () => {}},
   } = props;
 
@@ -38,7 +40,14 @@ function Index(props: propsType) {
 
   return (
     <View style={styles.searchWrap}>
-      <Image style={styles.searchLogin} source={loginUrl} />
+      {loginUrl ? (
+        <Image
+          style={styles.searchLogin}
+          source={loginUrl as ImageSourcePropType}
+        />
+      ) : (
+        loginUrl
+      )}
       <TextInput
         textAlign={textAlign}
         placeholder={defaultValue}
@@ -46,6 +55,7 @@ function Index(props: propsType) {
         onChangeText={text => {
           changeText(text);
         }}
+        secureTextEntry={secure}
         value={value}
       />
       {hasControl ? (

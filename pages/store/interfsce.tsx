@@ -4,7 +4,14 @@ export type userType = {
 };
 
 export type dataType = {
+  name: string;
+  id: number;
+  grade: number;
+};
+
+export type datasType = {
   users: userType;
+  data: dataType[];
 };
 
 export type actionType = {
