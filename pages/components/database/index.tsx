@@ -139,7 +139,7 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.datas}>
         <View style={styles.headerContainer}>
           <FlatList
@@ -178,7 +178,7 @@ const App = () => {
         numColumns={4}
         contentContainerStyle={styles.list}
       />
-    </View>
+    </ScrollView>
   );
 };
 

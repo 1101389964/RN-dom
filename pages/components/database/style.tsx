@@ -1,15 +1,15 @@
-import {StyleSheet, StatusBar} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: StatusBar.currentHeight || 0,
     backgroundColor: 'blue',
   },
   list: {
     flex: 1,
+    minHeight: 20,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -29,7 +29,8 @@ export default StyleSheet.create({
   },
   //输入栏
   inputContainer: {
-    flex: 2,
+    flex: 1.5,
+    minHeight: 60,
     backgroundColor: '#e3fede',
   },
   inputLine: {

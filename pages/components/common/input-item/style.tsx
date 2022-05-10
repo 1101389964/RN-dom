@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   search: {
     flex: 1,
-    height: 40,
+    height: 50,
     width: 200,
     lineHeight: 23,
     fontSize: 20,

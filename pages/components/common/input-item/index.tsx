@@ -36,7 +36,7 @@ function Index(props: propsType) {
     contorlMessage = {title: '', color: '#749bd3', onPress: () => {}},
   } = props;
 
-  const hasControl = props.hasOwnProperty('hasControl') ? false : true;
+  const hasControl = props.hasOwnProperty('contorlMessage');
 
   return (
     <View style={styles.searchWrap}>
@@ -57,16 +57,15 @@ function Index(props: propsType) {
         }}
         secureTextEntry={secure}
         value={value}
+        keyboardType={'numeric'}
       />
       {hasControl ? (
         <Button
           title={contorlMessage.title}
           onPress={contorlMessage.onPress}
-          color="#749bd3"
+          color="rgb(79,149,249)"
         />
-      ) : (
-        <></>
-      )}
+      ) : null}
     </View>
   );
 }
