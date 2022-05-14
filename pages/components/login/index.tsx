@@ -1,13 +1,8 @@
 import React, {memo, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  TouchableHighlight,
-} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 
 import InputItem from '../common/input-item';
+import Modal from '../common/modal';
 import {useSelector, shallowEqual} from 'react-redux';
 import styles from './style';
 import {datasType, userType} from '../../store/interfsce';
@@ -26,15 +21,15 @@ const App = (props: {navigation?: any}) => {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [modalLogin, setModalLogin] = useState(false);
-  const [result, setResult] = useState(false);
+  const [result, setResult] = useState('');
 
   function testVerify() {
     const {account: act, password: pwd} = users;
     if (account === act && password === pwd) {
-      setResult(true);
+      setResult('登陆成功');
       navigation.navigate('Home');
     } else {
-      setResult(false);
+      setResult('账号或密码错误');
       setModalLogin(true);
     }
   }
@@ -62,30 +57,7 @@ const App = (props: {navigation?: any}) => {
           <Text style={styles.btnText}>登录</Text>
         </TouchableOpacity>
       </View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalLogin}
-        onRequestClose={() => {
-          setModalLogin(!modalLogin);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              {result ? '登录成功' : '账号或密码错误'}
-            </Text>
-
-            <TouchableHighlight
-              style={styles.openButton}
-              onPress={() => {
-                setModalLogin(!modalLogin);
-              }}>
-              <Text style={styles.textStyle}>关闭</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-      </Modal>
+      <Modal text={result} visible={modalLogin} setVisible={setModalLogin} />
     </>
   );
 };

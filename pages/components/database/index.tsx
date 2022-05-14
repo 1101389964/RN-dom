@@ -14,6 +14,7 @@ import {addData, deleteData, editData} from '../../store/action';
 import {datasType, dataType} from '../../store/interfsce';
 
 import InputItem from '../common/input-item';
+import Modal from '../common/modal';
 import styles from './style';
 
 const baseURl = '../../img/icon/';
@@ -84,6 +85,8 @@ const App = () => {
   const [id, setId] = useState('');
   const [grade, setGrade] = useState('');
   const [showDate, setShowDate] = useState<dataType[]>(data);
+  const [visible, setVisible] = useState(false);
+  const [text, setText] = useState('');
 
   useEffect(() => {
     setShowDate(data);
@@ -98,10 +101,20 @@ const App = () => {
     switch (title) {
       case '添加':
         const result1 = data.every(item => item.id !== parseInt(id, 10));
-        if (result1 && name.trim() !== '' && grade.trim() !== '') {
-          dipatch(
-            addData({name, id: parseInt(id, 10), grade: parseInt(grade, 10)}),
-          );
+        if (result1) {
+          if (name.trim() !== '' && grade.trim() !== '') {
+            dipatch(
+              addData({name, id: parseInt(id, 10), grade: parseInt(grade, 10)}),
+            );
+            setText('添加成功');
+            setVisible(true);
+          } else {
+            setText('请输入姓名或成绩');
+            setVisible(true);
+          }
+        } else {
+          setText('学号已存在');
+          setVisible(true);
         }
         break;
       case '删除':
@@ -109,18 +122,78 @@ const App = () => {
         if (result2) {
           // console.log(parseInt(id, 10), result2);
           dipatch(deleteData(parseInt(id, 10)));
+          setText('删除成功');
+          setVisible(true);
+        } else {
+          setText('请输入正确的学号');
+          setVisible(true);
         }
         break;
       case '修改':
         const result3 = data.find(item => item.id === parseInt(id, 10));
         if (result3) {
-          dipatch(editData({id: parseInt(id, 10), grade: parseInt(grade, 10)}));
+          if (
+            typeof parseFloat(grade) === 'number' &&
+            parseFloat(grade) <= 100
+          ) {
+            dipatch(editData({id: parseInt(id, 10), grade: parseFloat(grade)}));
+            setText('修改成功');
+            setVisible(true);
+          } else {
+            setText('请输入正确的成绩');
+            setVisible(true);
+          }
         }
         break;
       case '查询':
-        const result4 = data.find(item => item.id === parseInt(id, 10));
-        if (result4) {
-          setShowDate([result4]);
+        const result4 = data.filter(item => {
+          if (id.trim() !== '' && name.trim() !== '' && grade.trim() !== '') {
+            return (
+              item.id === parseInt(id, 10) &&
+              item.grade === parseFloat(grade) &&
+              item.name === name
+            );
+          } else if (
+            id.trim() === '' &&
+            name.trim() !== '' &&
+            grade.trim() !== ''
+          ) {
+            return item.grade === parseFloat(grade) && item.name === name;
+          } else if (
+            id.trim() !== '' &&
+            name.trim() === '' &&
+            grade.trim() !== ''
+          ) {
+            return (
+              item.id === parseInt(id, 10) && item.grade === parseFloat(grade)
+            );
+          } else if (
+            id.trim() !== '' &&
+            name.trim() !== '' &&
+            grade.trim() === ''
+          ) {
+            return item.id === parseInt(id, 10) && item.name === name;
+          } else if (
+            id.trim() === '' &&
+            name.trim() === '' &&
+            grade.trim() === ''
+          ) {
+            return true;
+          } else {
+            return (
+              item.id === parseInt(id, 10) ||
+              item.grade === parseFloat(grade) ||
+              item.name === name
+            );
+          }
+        });
+        if (result4.length) {
+          setShowDate(result4);
+          setText('查询成功');
+          setVisible(true);
+        } else {
+          setText('未查询到');
+          setVisible(true);
         }
     }
   };
@@ -178,6 +251,7 @@ const App = () => {
         numColumns={4}
         contentContainerStyle={styles.list}
       />
+      <Modal visible={visible} setVisible={setVisible} text={text} />
     </ScrollView>
   );
 };

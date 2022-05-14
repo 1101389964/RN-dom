@@ -64,13 +64,8 @@ const data: datasType = {
       grade: 89,
     },
     {
-      name: 'redux',
-      id: 1012,
-      grade: 73,
-    },
-    {
       name: 'immutable',
-      id: 1013,
+      id: 1012,
       grade: 74,
     },
   ],

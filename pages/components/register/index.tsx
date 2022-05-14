@@ -1,15 +1,9 @@
 import React, {memo, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  TouchableHighlight,
-} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import InputItem from '../common/input-item/index';
-
+import Modal from '../common/modal/index';
 import {register} from '../../store/action';
 
 import styles from './style';
@@ -21,13 +15,13 @@ const App: React.FC = () => {
   const [password, setPassword] = useState('');
   const [modalVerify, setModalVerify] = useState(false);
   const [modalLogin, setModalLogin] = useState(false);
-  const [result, setResult] = useState(false);
+  const [result, setResult] = useState('');
   const [verify, setverify] = useState('121456');
   // dispath
   const dispatch = useDispatch(); //从Hook里面获取dispatch,useDispatch来自于react-redux
 
   function getVerify() {
-    const getRandom = () => Math.round(Math.random() * 10);
+    const getRandom = () => Math.floor(Math.random() * 10);
     let num = '';
     for (let i = 0; i < 6; i++) {
       num += getRandom();
@@ -38,7 +32,7 @@ const App: React.FC = () => {
 
   function testVerify() {
     const res = verify === vrify ? true : false;
-    setResult(res);
+    res ? setResult('注册成功') : setResult('验证码错误');
     setModalLogin(true);
     if (res) {
       dispatch(register({account, password}));
@@ -79,51 +73,8 @@ const App: React.FC = () => {
           <Text style={styles.btnText}>注册</Text>
         </TouchableOpacity>
       </View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVerify}
-        onRequestClose={() => {
-          setModalVerify(!modalVerify);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{verify}</Text>
-
-            <TouchableHighlight
-              style={styles.openButton}
-              onPress={() => {
-                setModalVerify(!modalVerify);
-              }}>
-              <Text style={styles.textStyle}>关闭验证码</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalLogin}
-        onRequestClose={() => {
-          setModalLogin(!modalLogin);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              {result ? '注册成功' : '验证码错误'}
-            </Text>
-
-            <TouchableHighlight
-              style={styles.openButton}
-              onPress={() => {
-                setModalLogin(!modalLogin);
-              }}>
-              <Text style={styles.textStyle}>关闭</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-      </Modal>
+      <Modal visible={modalVerify} text={verify} setVisible={setModalVerify} />
+      <Modal visible={modalLogin} text={result} setVisible={setModalLogin} />
     </>
   );
 };
