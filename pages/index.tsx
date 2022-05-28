@@ -36,7 +36,16 @@ export default function () {
           <Stack.Screen
             name="Home"
             component={Home}
-            options={{title: '数据库'}}
+            options={{
+              title: '数据库',
+              headerStyle: {
+                backgroundColor: '#d1c2d3', //浅色
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

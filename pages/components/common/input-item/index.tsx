@@ -34,24 +34,23 @@ function Index(props: propsType) {
     textAlign = 'left',
     secure = false,
     contorlMessage = {title: '', color: '#749bd3', onPress: () => {}},
+    style,
   } = props;
 
   const hasControl = props.hasOwnProperty('contorlMessage');
 
   return (
-    <View style={styles.searchWrap}>
+    <View style={[styles.searchWrap, style]}>
       {loginUrl ? (
         <Image
           style={styles.searchLogin}
           source={loginUrl as ImageSourcePropType}
         />
-      ) : (
-        loginUrl
-      )}
+      ) : null}
       <TextInput
         textAlign={textAlign}
         placeholder={defaultValue}
-        style={styles.search}
+        style={[styles.search, style]}
         onChangeText={text => {
           changeText(text);
         }}

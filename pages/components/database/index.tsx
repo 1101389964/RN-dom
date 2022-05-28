@@ -53,8 +53,9 @@ const Header = ({item}) => {
 };
 
 const Body = ({index, item}) => {
+  const color = index % 2 === 0 ? '#e6d2d5' : '#e9ccd3';
   return (
-    <View style={styles.bodyline}>
+    <View style={[styles.bodyline, {backgroundColor: color}]}>
       <View style={styles.bodyItem}>
         <Text style={styles.bodyText}>{index}</Text>
       </View>
@@ -233,15 +234,23 @@ const App = () => {
       <View style={styles.inputContainer}>
         <View style={styles.inputLine}>
           <Text style={styles.inputText}>姓名</Text>
-          <InputItem value={name} changeText={setName} />
+          <InputItem
+            value={name}
+            changeText={setName}
+            style={styles.inputItem}
+          />
         </View>
         <View style={styles.inputLine}>
           <Text style={styles.inputText}>学号</Text>
-          <InputItem value={id} changeText={setId} />
+          <InputItem value={id} changeText={setId} style={styles.inputItem} />
         </View>
         <View style={styles.inputLine}>
           <Text style={styles.inputText}>成绩</Text>
-          <InputItem value={grade} changeText={setGrade} />
+          <InputItem
+            value={grade}
+            changeText={setGrade}
+            style={styles.inputItem}
+          />
         </View>
       </View>
       <FlatList
