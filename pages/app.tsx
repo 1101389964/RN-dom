@@ -28,7 +28,7 @@ export default memo(props => {
       <View style={styles.top}>
         <View style={styles.img}>
           <ImageBackground
-            source={require('./img/src=http___img1.niutuku.com_hd_1308_59_59-niutuku.com-242526.jpg&refer=http___img1.niutuku.webp')}
+            source={require('./img/background.webp')}
             style={styles.img}>
             <View style={styles.btnFather}>
               <Text style={styles.LoginOrRegister} onPress={login}>

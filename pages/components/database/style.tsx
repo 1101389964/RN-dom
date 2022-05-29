@@ -5,7 +5,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#d1c2d3', //浅色
+    backgroundColor: '#144a74', //浅色
   },
   list: {
     flex: 1,
@@ -45,7 +45,8 @@ export default StyleSheet.create({
     fontSize: 20,
   },
   inputItem: {
-    backgroundColor: '#e4dfd7', // 浅色
+    backgroundColor: '#8fb2c9', // 浅色
+    color: '#222',
   },
   //数据列表
   datas: {
@@ -56,7 +57,7 @@ export default StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#d1c2d3', //浅色
+    backgroundColor: '#144a74', //浅色
   },
   headerItem: {
     flexBasis: 70,
@@ -64,7 +65,7 @@ export default StyleSheet.create({
     margin: 14,
     padding: 5,
     height: 35,
-    backgroundColor: '#c08eaf', //浅色
+    backgroundColor: '#2177b8', //浅色
     borderRadius: 10,
   },
   headerText: {
@@ -74,7 +75,7 @@ export default StyleSheet.create({
   bodyContainer: {
     flex: 5,
     flexDirection: 'column',
-    backgroundColor: '#c8adc4', //浅色
+    backgroundColor: '#144a74', //浅色
   },
   bodyline: {
     flex: 1,

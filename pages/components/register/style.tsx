@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 40,
     borderRadius: 15,
-    backgroundColor: 'rgb(79,149,249)',
+    backgroundColor: '#2177b8',
   },
   btnText: {
     fontSize: 20,

@@ -53,7 +53,7 @@ const Header = ({item}) => {
 };
 
 const Body = ({index, item}) => {
-  const color = index % 2 === 0 ? '#e6d2d5' : '#e9ccd3';
+  const color = index % 2 === 0 ? '#4e7ca1' : '#8fb2c9';
   return (
     <View style={[styles.bodyline, {backgroundColor: color}]}>
       <View style={styles.bodyItem}>

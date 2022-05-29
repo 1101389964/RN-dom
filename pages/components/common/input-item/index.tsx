@@ -62,7 +62,7 @@ function Index(props: propsType) {
         <Button
           title={contorlMessage.title}
           onPress={contorlMessage.onPress}
-          color="rgb(79,149,249)"
+          color="#2177b8"
         />
       ) : null}
     </View>

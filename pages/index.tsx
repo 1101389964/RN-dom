@@ -15,22 +15,20 @@ export default function () {
     <Provider store={store}>
       <NavigationContainer>
         {/* initialRouteName 为默认的路由name, screenOptions为配置去全局标题栏样式 */}
-        <Stack.Navigator
-          initialRouteName="Login"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#2196F3',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}>
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="Login"
             component={App}
             options={{
               title: '登录',
+              headerStyle: {
+                // backgroundColor: '#2196F3', //浅色
+                backgroundColor: '#144a74', //深色
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
             }}
           />
           <Stack.Screen
@@ -39,7 +37,8 @@ export default function () {
             options={{
               title: '数据库',
               headerStyle: {
-                backgroundColor: '#d1c2d3', //浅色
+                // backgroundColor: '#d1c2d3', //浅色
+                backgroundColor: '#144a74', //深色
               },
               headerTintColor: '#fff',
               headerTitleStyle: {

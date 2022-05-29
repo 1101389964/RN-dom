@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   openButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#2177b8',
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 5,
