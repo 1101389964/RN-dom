@@ -213,7 +213,7 @@ const App = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <View style={styles.datas}>
         <View style={styles.headerContainer}>
           <FlatList
@@ -223,13 +223,13 @@ const App = () => {
             numColumns={4}
           />
         </View>
-        <ScrollView style={styles.bodyContainer}>
+        <View style={styles.bodyContainer}>
           <FlatList
             data={showDate}
             renderItem={renderBody}
             keyExtractor={item => item.name}
           />
-        </ScrollView>
+        </View>
       </View>
       <View style={styles.inputContainer}>
         <View style={styles.inputLine}>
@@ -261,7 +261,7 @@ const App = () => {
         contentContainerStyle={styles.list}
       />
       <Modal visible={visible} setVisible={setVisible} text={text} />
-    </ScrollView>
+    </View>
   );
 };
 
