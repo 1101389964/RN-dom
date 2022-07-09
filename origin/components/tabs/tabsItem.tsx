@@ -6,11 +6,28 @@ import {ItemStyles} from './style';
 import {ItemProps} from './interface';
 
 const tabsItem: React.FC<ItemProps> = props => {
-  const {index, activeKey, disable, direction, isfixed, onChange, title} =
-    props;
-  const [side, setSide] = React.useState({width: 0, height: 0});
+  const {
+    index,
+    activeKey,
+    disable,
+    direction,
+    isfixed,
+    onChange,
+    title,
+    setItemsSide,
+  } = props;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // const [side, setSide] = React.useState({width: 0, height: 0});
   return (
     <View
+      // onLayout 当组件挂载或者布局变化的时候调用，获取组件的长宽传递给父组件，使点击时 ScrollView 会依据width和height自动滚动；
+      onLayout={({
+        nativeEvent: {
+          layout: {width, height},
+        },
+      }) => {
+        setItemsSide && setItemsSide({width, height});
+      }}
       style={[
         ItemStyles.container,
         !disable && index === activeKey && ItemStyles.activeStyle,
@@ -20,16 +37,9 @@ const tabsItem: React.FC<ItemProps> = props => {
           : ItemStyles.containerBorderRight,
       ]}>
       <TouchableOpacity
+        activeOpacity={0.7}
         onPress={() => {
           onChange && onChange(index as number);
-        }}
-        // 当组件挂载或者布局变化的时候调用，获取组件的长宽传递给父组件，使点击 ScrollView 时自动滚动；
-        onLayout={({
-          nativeEvent: {
-            layout: {width},
-          },
-        }) => {
-          console.log(width);
         }}>
         <Text
           style={[

@@ -22,6 +22,11 @@ export default function index() {
               <Text>hello</Text>
             </View>
           </TabsItem>
+          <TabsItem title="8">
+            <View>
+              <Text>hhh</Text>
+            </View>
+          </TabsItem>
         </Tabs>
       </View>
     </SafeAreaView>
