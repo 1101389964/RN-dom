@@ -6,6 +6,7 @@ EStyleSheet.build({
   $active_color: '#3f90f7',
   $active_backgroundColor: '#e9f6fe',
   $fontColor: '#111',
+  $disable: '#ddd',
 });
 
 const Styles = EStyleSheet.create({
@@ -48,10 +49,15 @@ const ItemStyles = EStyleSheet.create({
   containerBorderRight: {
     borderRightWidth: 2,
   },
-  activeStyle: {
+  activeViewStyle: {
     borderColor: '$active_color',
     backgroundColor: '$active_backgroundColor',
+  },
+  activeTextStyle: {
     color: '$active_color',
+  },
+  disable: {
+    color: '$disable',
   },
   textStyle: {
     textAlign: 'center',

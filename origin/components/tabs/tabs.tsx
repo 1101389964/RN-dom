@@ -14,11 +14,21 @@ import {TabsProps, ItemProps} from './interface';
 import {Styles, ItemStyles} from './style';
 
 const Tabs: React.FC<TabsProps> = props => {
-  const {direction = 'row', activeKey = 0, onChange, children, style} = props;
+  const {
+    direction = 'row',
+    activeKey = 1,
+    onChange,
+    children,
+    style,
+    ...resProps
+  } = props;
 
   const flexDirection = direction === 'row' ? 'column' : 'row';
   const isfixed = (children as Array<ReactElement>).length <= 5 ? true : false;
-  let contents = null; // 存放active状态的Tabsitem的children
+  // 当大于5个子节点是就改为左右滑动；
+  const isScroll = (children as Array<ReactElement>).length <= 5 ? false : true;
+  // 存放active状态的Tabsitem的children
+  let contents = null;
 
   const [activeIndex, setActiveIndex] = useState(activeKey); // 被选中的索引
   const [itemsSide, setItemsSide] = useState({width: 0, height: 0}); // 每个itmes的长宽
@@ -55,36 +65,37 @@ const Tabs: React.FC<TabsProps> = props => {
         animated: true,
       });
     }
-
-    // console.log('halfLength==', halfLength);
-    // console.log('itemsFatherSide=', itemsFatherSide, 'itemsSide=', itemsSide);
   }
 
-  const childrens = React.Children.map(children, (item, index) => {
-    const childElement = item as React.FunctionComponentElement<ItemProps>;
-    // 获取 itemMenu 里面的 displayName 依次来筛选组件是不是 childElement
-    if (index === activeIndex) {
-      contents = childElement.props.children;
-    }
-    const {displayName} = childElement.type;
-    if (displayName === 'tabsItem') {
-      return cloneElement(childElement, {
-        index,
-        activeKey: activeIndex,
-        onChange: handleChange,
-        isfixed,
-        direction,
-        setItemsSide,
-      });
-    } else {
-      console.error(
-        'Warning: Menu has a child which is not a MenuItem component',
-      );
-    }
-  });
-  // 当大于5个子节点是就改为左右滑动；
-  const isScroll =
-    (childrens as Array<ReactElement>).length <= 5 ? false : true;
+  const childrens = useMemo(() => {
+    return React.Children.map(children, (item, index) => {
+      const childElement = item as React.FunctionComponentElement<ItemProps>;
+      // 获取 itemMenu 里面的 displayName 依次来筛选组件是不是 childElement
+      if (index === activeIndex) {
+        if ((item as ReactElement)?.props.disable) {
+          setActiveIndex(activeIndex + 1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        contents = childElement.props.children;
+      }
+      const {displayName} = childElement.type;
+      if (displayName === 'tabsItem') {
+        return cloneElement(childElement, {
+          index,
+          activeKey: activeIndex,
+          onChange: handleChange,
+          isfixed,
+          direction,
+          setItemsSide,
+          ...resProps,
+        });
+      } else {
+        console.error(
+          'Warning: Menu has a child which is not a MenuItem component',
+        );
+      }
+    });
+  }, [children, activeIndex]);
 
   return (
     <View style={[Styles.container, {flexDirection}, style]}>

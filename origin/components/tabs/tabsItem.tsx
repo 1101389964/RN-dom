@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 import {ItemStyles} from './style';
 
@@ -15,9 +15,13 @@ const tabsItem: React.FC<ItemProps> = props => {
     onChange,
     title,
     setItemsSide,
+    containerStyle,
+    activeViewStyle,
+    activeTextStyle,
+    disableViewStyle,
+    disaleTextStyle,
   } = props;
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // const [side, setSide] = React.useState({width: 0, height: 0});
+
   return (
     <View
       // onLayout 当组件挂载或者布局变化的时候调用，获取组件的长宽传递给父组件，使点击时 ScrollView 会依据width和height自动滚动；
@@ -29,9 +33,13 @@ const tabsItem: React.FC<ItemProps> = props => {
         setItemsSide && setItemsSide({width, height});
       }}
       style={[
+        // 这里也需要注意样式的层叠顺序，否则用户传递的样式可能会被覆盖掉
         ItemStyles.container,
-        !disable && index === activeKey && ItemStyles.activeStyle,
         !isfixed && ItemStyles.contaninerLength,
+        containerStyle,
+        index === activeKey &&
+          StyleSheet.compose(ItemStyles.activeViewStyle, activeViewStyle),
+        disable && disableViewStyle,
         direction === 'row'
           ? ItemStyles.containerBorderBottom
           : ItemStyles.containerBorderRight,
@@ -39,12 +47,14 @@ const tabsItem: React.FC<ItemProps> = props => {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => {
-          onChange && onChange(index as number);
+          !disable && onChange && onChange(index as number);
         }}>
         <Text
           style={[
             ItemStyles.textStyle,
-            !disable && index === activeKey && ItemStyles.activeStyle,
+            index === activeKey &&
+              StyleSheet.compose(ItemStyles.activeTextStyle, activeTextStyle),
+            disable && StyleSheet.compose(ItemStyles.disable, disaleTextStyle),
           ]}>
           {title}
         </Text>
