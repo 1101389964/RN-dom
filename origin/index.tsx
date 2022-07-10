@@ -11,7 +11,7 @@ export default function index() {
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <Tabs
-          direction="column"
+          direction="row"
           /* activeTextStyle={{color: 'blue', fontSize: 30}}
           activeViewStyle={{backgroundColor: 'red', borderColor: 'red'}}
           disaleTextStyle={{color: 'red'}}
@@ -34,7 +34,7 @@ export default function index() {
             </View>
           </TabsItem>
           <TabsItem title="8">
-            <View>
+            <View style={{flex: 1, backgroundColor: 'red'}}>
               <Text>hhh</Text>
             </View>
           </TabsItem>

@@ -1,29 +1,34 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useContext} from 'react';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 import {ItemStyles} from './style';
 
+import {TabsContext} from './tabs';
+
 import {ItemProps} from './interface';
 
-const tabsItem: React.FC<ItemProps> = props => {
+const TabsItem: React.FC<ItemProps> = props => {
+  const {index, disable, title} = props;
+
   const {
-    index,
     activeKey,
-    disable,
     direction,
     isfixed,
     onChange,
-    title,
     setItemsSide,
     containerStyle,
     activeViewStyle,
     activeTextStyle,
     disableViewStyle,
     disaleTextStyle,
-  } = props;
+  } = useContext(TabsContext);
 
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => {
+        !disable && onChange && onChange(index as number);
+      }}
       // onLayout 当组件挂载或者布局变化的时候调用，获取组件的长宽传递给父组件，使点击时 ScrollView 会依据width和height自动滚动；
       onLayout={({
         nativeEvent: {
@@ -44,25 +49,19 @@ const tabsItem: React.FC<ItemProps> = props => {
           ? ItemStyles.containerBorderBottom
           : ItemStyles.containerBorderRight,
       ]}>
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => {
-          !disable && onChange && onChange(index as number);
-        }}>
-        <Text
-          style={[
-            ItemStyles.textStyle,
-            index === activeKey &&
-              StyleSheet.compose(ItemStyles.activeTextStyle, activeTextStyle),
-            disable && StyleSheet.compose(ItemStyles.disable, disaleTextStyle),
-          ]}>
-          {title}
-        </Text>
-      </TouchableOpacity>
-    </View>
+      <Text
+        style={[
+          ItemStyles.textStyle,
+          index === activeKey &&
+            StyleSheet.compose(ItemStyles.activeTextStyle, activeTextStyle),
+          disable && StyleSheet.compose(ItemStyles.disable, disaleTextStyle),
+        ]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
-tabsItem.displayName = 'tabsItem';
+TabsItem.displayName = 'tabsItem';
 
-export default tabsItem;
+export default TabsItem;

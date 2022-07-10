@@ -1,4 +1,5 @@
 import React, {
+  createContext,
   useState,
   useRef,
   useCallback,
@@ -9,26 +10,25 @@ import React, {
 } from 'react';
 import {View, ScrollView, Text} from 'react-native';
 
-import {TabsProps, ItemProps} from './interface';
+import {TabsProps, ItemProps, contextType} from './interface';
 
 import {Styles, ItemStyles} from './style';
 
+export const TabsContext = createContext<contextType>({activeKey: 0});
+
 const Tabs: React.FC<TabsProps> = props => {
   const {
+    type = 'tabs',
     direction = 'row',
     activeKey = 1,
     onChange,
     children,
     style,
-    ...resProps
   } = props;
 
   const flexDirection = direction === 'row' ? 'column' : 'row';
-  const isfixed = (children as Array<ReactElement>).length <= 5 ? true : false;
-  // 当大于5个子节点是就改为左右滑动；
+  // 当大于5个子节点是就改为左右滑动；若 <=5 采用flex布局的，
   const isScroll = (children as Array<ReactElement>).length <= 5 ? false : true;
-  // 存放active状态的Tabsitem的children
-  let contents = null;
 
   const [activeIndex, setActiveIndex] = useState(activeKey); // 被选中的索引
   const [itemsSide, setItemsSide] = useState({width: 0, height: 0}); // 每个itmes的长宽
@@ -37,7 +37,7 @@ const Tabs: React.FC<TabsProps> = props => {
 
   function handleChange(index: number) {
     setActiveIndex(index);
-    if (!isfixed) {
+    if (isScroll) {
       goToPage(index);
     }
     onChange && onChange(index);
@@ -70,24 +70,15 @@ const Tabs: React.FC<TabsProps> = props => {
   const childrens = useMemo(() => {
     return React.Children.map(children, (item, index) => {
       const childElement = item as React.FunctionComponentElement<ItemProps>;
-      // 获取 itemMenu 里面的 displayName 依次来筛选组件是不是 childElement
-      if (index === activeIndex) {
-        if ((item as ReactElement)?.props.disable) {
-          setActiveIndex(activeIndex + 1);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        contents = childElement.props.children;
-      }
+
+      // 限制chidren类型 获取 itemMenu 里面的 displayName 依次来筛选组件
       const {displayName} = childElement.type;
       if (displayName === 'tabsItem') {
         return cloneElement(childElement, {
           index,
-          activeKey: activeIndex,
-          onChange: handleChange,
-          isfixed,
-          direction,
-          setItemsSide,
-          ...resProps,
+          // 不要把 activeKey，onChange... 直接放在cloneElement中，这样每次更新activeKey都需要重新cloneElement,性能较低
+          // activeKey: activeIndex,
+          // onChange: handleChange,
         });
       } else {
         console.error(
@@ -95,7 +86,30 @@ const Tabs: React.FC<TabsProps> = props => {
         );
       }
     });
-  }, [children, activeIndex]);
+  }, [children]);
+
+  // contents 存放 active 状态的 Tabsitem children
+  const contents = useMemo(() => {
+    let res = null;
+    children &&
+      (children as Array<ReactElement>).forEach((item, index) => {
+        if (index === activeIndex) {
+          if ((item as ReactElement)?.props.disable) {
+            setActiveIndex(activeIndex + 1);
+          }
+          res = item.props.children;
+        }
+      });
+    return res;
+  }, [activeIndex, children]);
+
+  const contextValue = {
+    activeKey: activeIndex,
+    onChange: handleChange,
+    setItemsSide,
+    isfixed: !isScroll,
+    direction,
+  };
 
   return (
     <View style={[Styles.container, {flexDirection}, style]}>
@@ -135,11 +149,17 @@ const Tabs: React.FC<TabsProps> = props => {
           scrollEnabled={isScroll}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}>
-          {childrens}
+          <TabsContext.Provider value={contextValue}>
+            {childrens}
+          </TabsContext.Provider>
         </ScrollView>
       </View>
       <View style={[Styles.bottomContent]}>
-        <Text style={ItemStyles.textStyle}>{contents}</Text>
+        {typeof contents === 'string' ? (
+          <Text style={ItemStyles.textStyle}>{contents}</Text>
+        ) : (
+          contents
+        )}
       </View>
     </View>
   );
