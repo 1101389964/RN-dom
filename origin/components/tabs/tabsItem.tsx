@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 
 import {ItemStyles} from './style';
 
@@ -8,12 +8,12 @@ import {TabsContext} from './tabs';
 import {ItemProps} from './interface';
 
 const TabsItem: React.FC<ItemProps> = props => {
-  const {index, disable, title} = props;
+  const {index, disable, title, source} = props;
 
   const {
+    type,
     activeKey,
     direction,
-    isfixed,
     onChange,
     setItemsSide,
     containerStyle,
@@ -40,7 +40,6 @@ const TabsItem: React.FC<ItemProps> = props => {
       style={[
         // 这里也需要注意样式的层叠顺序，否则用户传递的样式可能会被覆盖掉
         ItemStyles.container,
-        !isfixed && ItemStyles.contaninerLength,
         containerStyle,
         index === activeKey &&
           StyleSheet.compose(ItemStyles.activeViewStyle, activeViewStyle),
@@ -49,6 +48,9 @@ const TabsItem: React.FC<ItemProps> = props => {
           ? ItemStyles.containerBorderBottom
           : ItemStyles.containerBorderRight,
       ]}>
+      {type === 'image' ? (
+        <Image source={source || {uri: ''}} style={ItemStyles.imageStyle} />
+      ) : null}
       <Text
         style={[
           ItemStyles.textStyle,

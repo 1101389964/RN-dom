@@ -2,13 +2,11 @@ import React, {
   createContext,
   useState,
   useRef,
-  useCallback,
-  useEffect,
   useMemo,
   cloneElement,
   ReactElement,
 } from 'react';
-import {View, ScrollView, Text} from 'react-native';
+import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 
 import {TabsProps, ItemProps, contextType} from './interface';
 
@@ -28,11 +26,15 @@ const Tabs: React.FC<TabsProps> = props => {
 
   const flexDirection = direction === 'row' ? 'column' : 'row';
   // 当大于5个子节点是就改为左右滑动；若 <=5 采用flex布局的，
-  const isScroll = (children as Array<ReactElement>).length <= 5 ? false : true;
+  const childLength = (children as Array<ReactElement>).length;
+  const isScroll = childLength <= 5 ? false : true;
+  const showDropBtn =
+    type === 'tabs' && direction === 'row' && childLength >= 10;
 
   const [activeIndex, setActiveIndex] = useState(activeKey); // 被选中的索引
   const [itemsSide, setItemsSide] = useState({width: 0, height: 0}); // 每个itmes的长宽
   const [itemsFatherSide, setItemsFatherSide] = useState({width: 0, height: 0}); // items父盒子的长宽
+  const [visible, setVisible] = useState(true);
   const contentScrollView = useRef<any>();
 
   function handleChange(index: number) {
@@ -67,6 +69,13 @@ const Tabs: React.FC<TabsProps> = props => {
     }
   }
 
+  /**
+   * 展示 tab 弹框
+   */
+  const showDropChips = () => {
+    setVisible(!visible);
+  };
+
   const childrens = useMemo(() => {
     return React.Children.map(children, (item, index) => {
       const childElement = item as React.FunctionComponentElement<ItemProps>;
@@ -88,6 +97,25 @@ const Tabs: React.FC<TabsProps> = props => {
     });
   }, [children]);
 
+  const modalItems = useMemo(() => {
+    return (
+      children &&
+      (children as Array<ReactElement>).map((item, index) => {
+        const childElement = item as React.FunctionComponentElement<ItemProps>;
+        return (
+          <TouchableOpacity
+            style={Styles.modalItem}
+            onPress={() => {
+              setVisible(false);
+              handleChange(index);
+            }}>
+            <Text>{childElement.props.title}</Text>
+          </TouchableOpacity>
+        );
+      })
+    );
+  }, [children]);
+
   // contents 存放 active 状态的 Tabsitem children
   const contents = useMemo(() => {
     let res = null;
@@ -107,8 +135,8 @@ const Tabs: React.FC<TabsProps> = props => {
     activeKey: activeIndex,
     onChange: handleChange,
     setItemsSide,
-    isfixed: !isScroll,
     direction,
+    type,
   };
 
   return (
@@ -131,7 +159,9 @@ const Tabs: React.FC<TabsProps> = props => {
           },
         }) => {
           setItemsFatherSide({width, height});
-        }}>
+        }}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{position: 'relative'}}>
         <ScrollView
           ref={contentScrollView}
           horizontal={direction === 'row' ? true : false}
@@ -153,6 +183,14 @@ const Tabs: React.FC<TabsProps> = props => {
             {childrens}
           </TabsContext.Provider>
         </ScrollView>
+        {showDropBtn && (
+          <TouchableOpacity
+            style={Styles.iconWrap}
+            activeOpacity={1}
+            onPress={showDropChips}>
+            <View style={Styles.icon} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={[Styles.bottomContent]}>
         {typeof contents === 'string' ? (
@@ -161,6 +199,7 @@ const Tabs: React.FC<TabsProps> = props => {
           contents
         )}
       </View>
+      {visible && <View style={Styles.dropModal}>{modalItems}</View>}
     </View>
   );
 };

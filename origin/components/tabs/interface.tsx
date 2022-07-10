@@ -5,6 +5,7 @@ import {
   ImageStyle,
   LayoutChangeEvent,
   ScrollViewProps,
+  ImageSourcePropType,
 } from 'react-native';
 
 type onChange = (index: number) => void;
@@ -45,6 +46,9 @@ export interface ItemProps {
   // 顶部标题
   title: string;
 
+  // image类型图片地址
+  source?: ImageSourcePropType;
+
   // children
   children: React.ReactElement | string;
 
@@ -70,6 +74,9 @@ export interface contextType extends styleType {
 
   // 横向与纵向
   direction?: direction;
+
+  // type
+  type?: 'tabs' | 'image' | 'segmentation';
 }
 
 interface styleType {
